@@ -1,0 +1,20 @@
+{
+  "name": "rebb-agent-proxy",
+  "version": "1.0.0",
+  "description": "Claude API proxy for the REBB CRM real estate AI agent (lastinghomes.co). Fixes CORS for Claude.ai artifacts and forwards requests to the Anthropic Messages API with web_search support.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "author": "Ed Sarausad <edsar@kw.com>",
+  "license": "UNLICENSED",
+  "private": true
+}
