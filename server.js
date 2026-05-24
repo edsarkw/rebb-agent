@@ -10,10 +10,14 @@ const ANTHROPIC_BETA = 'web-search-2025-03-05';
 const pkg = require('./package.json');
 const STARTED_AT = Date.now();
 
+const slackActionsRouter = require('./routes/slack-actions');
+const authRouter = require('./routes/auth');
+const debugRouter = require('./routes/debug');
+const { startCron, stopCron } = require('./cron');
+
 const app = express();
 
 app.use(cors({ origin: true, credentials: false }));
-app.use(express.json({ limit: '10mb' }));
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -25,6 +29,13 @@ app.use((req, res, next) => {
   });
   next();
 });
+
+app.use(slackActionsRouter);
+
+app.use(express.json({ limit: '10mb' }));
+
+app.use(authRouter);
+app.use(debugRouter);
 
 app.get('/health', (req, res) => {
   res.json({
@@ -82,10 +93,16 @@ const server = app.listen(PORT, () => {
   if (!ANTHROPIC_API_KEY) {
     console.warn('WARNING: ANTHROPIC_API_KEY is not set. /v1/messages will return 500 until it is configured.');
   }
+  try {
+    startCron();
+  } catch (err) {
+    console.error('Failed to start cron:', err);
+  }
 });
 
 function shutdown(signal) {
   console.log(`Received ${signal}, shutting down gracefully...`);
+  stopCron();
   server.close((err) => {
     if (err) {
       console.error('Error during shutdown:', err);

@@ -11,8 +11,12 @@
     "node": ">=18"
   },
   "dependencies": {
+    "airtable": "^0.12.2",
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "croner": "^10.0.1",
+    "express": "^4.19.2",
+    "googleapis": "^172.0.0",
+    "zod": "^4.4.3"
   },
   "author": "Ed Sarausad <edsar@kw.com>",
   "license": "UNLICENSED",
