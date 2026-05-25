@@ -12,7 +12,8 @@ const router = express.Router();
 function requireBearer(req, res, next) {
   if (!config.debugKey) return res.status(503).json({ error: 'DEBUG_KEY not configured' });
   const auth = req.get('authorization') || '';
-  const token = auth.startsWith('Bearer ') ? auth.slice(7) : req.query.key;
+  const raw = auth.startsWith('Bearer ') ? auth.slice(7) : req.query.key;
+  const token = typeof raw === 'string' ? raw.trim() : '';
   if (token !== config.debugKey) return res.status(401).json({ error: 'unauthorized' });
   next();
 }

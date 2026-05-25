@@ -16,7 +16,8 @@ function checkDebugKey(req, res) {
     res.status(503).send('DEBUG_KEY not configured on server');
     return false;
   }
-  if (req.query.key !== config.debugKey) {
+  const provided = typeof req.query.key === 'string' ? req.query.key.trim() : '';
+  if (provided !== config.debugKey) {
     res.status(401).send('Unauthorized');
     return false;
   }
